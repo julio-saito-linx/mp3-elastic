@@ -5,7 +5,9 @@ define(function() {
 	return {
 		specs: ['spec/collections/songs.js',
 		'spec/exampleTest.js',
-		'spec/models/song.js'
+		'spec/models/song.js',
+		'spec/views/composite/songs.js',
+		'spec/views/item/song.js'
 		]
 	};
 });
