@@ -21,7 +21,8 @@ require.config({
         'backbone.babysitter': '../bower_components/backbone.babysitter/lib/amd/backbone.babysitter',
 
         /* alias the bootstrap js lib */
-        bootstrap: 'vendor/bootstrap',
+        bootstrap: '../bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap',
+        
         'bootstrap-button': 'vendor/bootstrap-button',
 
         /* Alias text.js for template loading and shortcut the templates dir to tmpl */
