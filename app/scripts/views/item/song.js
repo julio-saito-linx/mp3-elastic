@@ -12,7 +12,9 @@ function( Backbone, SongTmpl  ) {
 			console.log("initialize a Song ItemView");
 		},
 		
-    	template: SongTmpl,
+      template: SongTmpl,
+
+      tagName: 'tr',
         
 
     	/* ui selector cache */

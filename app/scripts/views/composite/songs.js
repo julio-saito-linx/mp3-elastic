@@ -16,13 +16,12 @@ function( Backbone, Song, SongsTmpl  ) {
     	itemView: Song,
     	
     	template: SongsTmpl,
-    	
 
     	/* ui selector cache */
     	ui: {},
 
     	/* where are we appending the items views */
-    	itemViewContainer: "",
+    	itemViewContainer: "tbody",
 
 		/* Ui events hash */
 		events: {},

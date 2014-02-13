@@ -3,10 +3,16 @@ require.config({
     baseUrl: "/scripts",
 
     /* starting point for application */
-    deps: ['backbone.marionette', 'bootstrap', 'main'],
+    deps: ['backbone.marionette', 'bootstrap', 'meld_log', 'main'],
 
 
     shim: {
+        meld_log: {
+            deps: [
+                'underscore'
+            ],
+            exports: '__MELD_LOG'
+        },
         backbone: {
             deps: [
                 'underscore',
@@ -24,6 +30,8 @@ require.config({
         jquery: '../bower_components/jquery/jquery',
         backbone: '../bower_components/backbone-amd/backbone',
         underscore: '../bower_components/underscore-amd/underscore',
+        rsvp: '../bower_components/rsvp/rsvp.amd',
+        meld_log: '../scripts/libs/meld_log',
 
         /* alias all marionette libs */
         'backbone.marionette': '../bower_components/backbone.marionette/lib/core/amd/backbone.marionette',

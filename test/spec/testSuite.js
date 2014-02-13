@@ -5,7 +5,10 @@ define(function() {
 	return {
 		specs: ['spec/collections/songs.js',
 		'spec/exampleTest.js',
+		'spec/models/search.js',
 		'spec/models/song.js',
+		'spec/regions/body.js',
+		'spec/regions/header.js',
 		'spec/views/composite/songs.js',
 		'spec/views/item/song.js'
 		]
