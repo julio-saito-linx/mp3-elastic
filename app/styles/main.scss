@@ -4,3 +4,17 @@
     margin: 50px auto 0 auto;
     width: 400px;
 }
+
+.bs-example {
+  position: relative;
+  padding: 20px 15px 15px;
+  margin: 20px -15px 15px;
+
+  margin-left: 0;
+  margin-right: 0;
+  background-color: #fff;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ddd;
+  border-radius: 4px 4px 0 0;
+}
