@@ -10,8 +10,10 @@ define(function() {
 		'spec/models/song.js',
 		'spec/regions/body.js',
 		'spec/regions/header.js',
+		'spec/regions/player.js',
 		'spec/routers/search-router.js',
 		'spec/views/composite/songs.js',
+		'spec/views/item/player.js',
 		'spec/views/item/search-header.js',
 		'spec/views/item/song.js'
 		]

@@ -6,28 +6,34 @@ define([
 
   'regions/body',
   'regions/header',
+  'regions/player',
 
   'collections/songs',
   'views/composite/songs',
   'views/item/search-header',
+  'views/item/player',
   'models/search',
   'controllers/searcher',
   'routers/search-router',
 ],
 
-function( Backbone,
-          Communicator,
-          RSVP,
+function(
+  Backbone,
+  Communicator,
+  RSVP,
 
-          Body,
-          Header,
+  Body,
+  Header,
+  Player,
 
-          SongsCollection,
-          SongsView,
-          HeaderView,
-          SearchModel,
-          SeacherController,
-          SearchRouter ) {
+  SongsCollection,
+  SongsView,
+  HeaderView,
+  PlayerView,
+  SearchModel,
+  SeacherController,
+  SearchRouter )
+{
   'use strict';
 
   var App = new Backbone.Marionette.Application();
@@ -36,6 +42,7 @@ function( Backbone,
      Regions
   *  *********/
   App.addRegions({
+    player: new Player(),
     header: new Header(),
     body: new Body()
   });
@@ -73,6 +80,12 @@ function( Backbone,
     App.router = new SearchRouter({
       controller: this.searcher
     });
+
+    //PLAYER region
+    var playerView = new PlayerView({
+      //model: this.searcher.searchModel
+    });
+    this.player.show(playerView);
 
     //HEADER region
     var searchHeader = new HeaderView({
