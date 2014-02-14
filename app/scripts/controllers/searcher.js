@@ -17,13 +17,15 @@ function(
       this.elasticSearcher = new ElasticSearcher('http://localhost:9200/music_library/song/');
       this.searchModel = new SearchModel();
       this.songs = options.songs;
+
+      Communicator.mediator.on('page:prev', this.prevPage, this);
+      Communicator.mediator.on('page:next', this.nextPage, this);
     },
 
     setQuery: function( query ) {
       this.searchModel.set('query', query);
       this.searchModel.set('page', 1);
-      var newUrl = this.searchModel.getSearchUrl();
-      Communicator.mediator.trigger('app:navigate', newUrl);
+      Communicator.mediator.trigger('app:navigate', this.searchModel.getSearchUrl());
     },
 
     search: function( page, query ) {
@@ -40,6 +42,17 @@ function(
       });
 
     },
+
+    prevPage: function() {
+      this.searchModel.previousPage();
+      Communicator.mediator.trigger('app:navigate', this.searchModel.getSearchUrl());
+    },
+    nextPage: function() {
+      this.searchModel.nextPage();
+      Communicator.mediator.trigger('app:navigate', this.searchModel.getSearchUrl());
+    },
+
+
 
 	});
 

@@ -75,7 +75,9 @@ function( Backbone,
     });
 
     //HEADER region
-    var searchHeader = new HeaderView();
+    var searchHeader = new HeaderView({
+      model: this.searcher.searchModel
+    });
     this.header.show(searchHeader);
 
     //BODY region

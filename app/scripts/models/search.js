@@ -2,10 +2,13 @@ define([
 	'backbone'
 ],
 function( Backbone ) {
-    'use strict';
+  'use strict';
 
 	/* Return a model class definition */
 	return Backbone.Model.extend({
+
+    defaults: {},
+
 		initialize: function(options) {
       if(options){
         this.set('page', options.page);
@@ -15,20 +18,44 @@ function( Backbone ) {
       else{
         this.set('page', 1);
         this.set('size', 12);
-        this.set('sort', 'album:asc');
-        //this.set('totalPages', this.totalPages.bind(this));
+        this.set('sort', 'artist:asc,album:asc');
+        this.set('totalPages', this.totalPages.bind(this));
       }
 		},
 
     getSearchUrl: function() {
-      var url = "search/";
+      var url = 'search/';
       url += this.get('page');
-      url += "/";
+      url += '/';
       url += this.get('query');
       return url;
     },
 
-		defaults: {},
+    previousPage: function() {
+      var currentPage = this.get('page');
+      if(currentPage > 1){
+        this.set('page', --currentPage);
+      }
+    },
+    nextPage: function() {
+      var total = this.get('total');
+      var pageSize = this.get('size');
+      var currentPage = this.get('page');
 
-    });
+      var totalpages = Math.ceil(total/pageSize);
+      if(currentPage < totalpages){
+        this.set('page', ++currentPage);
+      }
+    },
+
+    totalPages: function() {
+      var total = this.get('total');
+      var pageSize = this.get('size');
+      var totalpages = Math.ceil(total/pageSize);
+
+      return totalpages;
+    },
+
+
+  });
 });
