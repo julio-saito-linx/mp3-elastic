@@ -2,29 +2,35 @@ define([
 	'backbone',
   'libs/elastic_searcher',
   'models/search',
+  'communicator',
 ],
 function(
   Backbone,
   ElasticSearcher,
-  SearchModel
+  SearchModel,
+  Communicator
 ){
   'use strict';
 	return Backbone.Marionette.Controller.extend({
 
 		initialize: function ( options ) {
-      console.log('initialize a Searcher Controller', options);
       this.elasticSearcher = new ElasticSearcher('http://localhost:9200/music_library/song/');
+      this.searchModel = new SearchModel();
       this.songs = options.songs;
-		},
+    },
 
-    search: function( query ) {
-      console.log('search:', query);
+    setQuery: function( query ) {
+      this.searchModel.set('query', query);
+      this.searchModel.set('page', 1);
+      var newUrl = this.searchModel.getSearchUrl();
+      Communicator.mediator.trigger('app:navigate', newUrl);
+    },
 
-      //ElasticSearcher and SearchModel
-      var searchModel = new SearchModel();
-      searchModel.set('query', query);
+    search: function( page, query ) {
+      this.searchModel.set('query', query);
+      this.searchModel.set('page', page);
       
-      this.elasticSearcher.searchElasticSearch(searchModel).then(function(data){
+      this.elasticSearcher.searchElasticSearch(this.searchModel).then(function(data){
 
         //resets Collection
         this.songs.reset(data);

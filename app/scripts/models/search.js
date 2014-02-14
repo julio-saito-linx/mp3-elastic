@@ -20,6 +20,14 @@ function( Backbone ) {
       }
 		},
 
+    getSearchUrl: function() {
+      var url = "search/";
+      url += this.get('page');
+      url += "/";
+      url += this.get('query');
+      return url;
+    },
+
 		defaults: {},
 
     });

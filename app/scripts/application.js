@@ -12,6 +12,7 @@ define([
   'views/item/search-header',
   'models/search',
   'controllers/searcher',
+  'routers/search-router',
 ],
 
 function( Backbone,
@@ -25,12 +26,15 @@ function( Backbone,
           SongsView,
           HeaderView,
           SearchModel,
-          SeacherController ) {
+          SeacherController,
+          SearchRouter ) {
   'use strict';
 
   var App = new Backbone.Marionette.Application();
 
-  /* Add application regions here */
+  /* *********
+     Regions
+  *  *********/
   App.addRegions({
     header: new Header(),
     body: new Body()
@@ -66,6 +70,10 @@ function( Backbone,
       songs: this.songs
     });
 
+    App.router = new SearchRouter({
+      controller: this.searcher
+    });
+
     //HEADER region
     var searchHeader = new HeaderView();
     this.header.show(searchHeader);
@@ -78,7 +86,20 @@ function( Backbone,
     this.body.show(songsView);
 
     //EVENTS
-    Communicator.mediator.on('query:created', this.searcher.search, this.searcher);
+    Communicator.mediator.on('query:created', App.queryReceived, this);
+    Communicator.mediator.on('app:navigate', App.navigate, this);
+  });
+
+  App.queryReceived = function( query ) {
+    this.searcher.setQuery( query );
+  };
+
+  App.navigate = function( url, trigger ) {
+    App.router.navigate(url, { trigger: trigger || true });
+  };
+
+  App.on('initialize:after', function () {
+    Backbone.history.start();
   });
 
   return App;

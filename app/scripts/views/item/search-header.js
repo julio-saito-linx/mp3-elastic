@@ -35,7 +35,7 @@ function( Backbone, SearchHeaderTmpl, Communicator ) {
       e.preventDefault();
 
       var query = this.ui.inputQ.val();
-      this.ui.inputQ.val('');
+      //this.ui.inputQ.val('');
 
       Communicator.mediator.trigger('query:created', query);
     }
