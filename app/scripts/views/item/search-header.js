@@ -1,3 +1,4 @@
+/* global $*/
 define([
 	'backbone',
 	'hbs!tmpl/item/search-header_tmpl',
@@ -41,20 +42,21 @@ function( Backbone, SearchHeaderTmpl, Communicator ) {
 
     /* ui selector cache */
     ui: {
-      inputQ: "#q",
+      inputQ: '#q',
       pageNumber: '#pageNumber',
       totalPageNumber: '#totalPageNumber',
       totalMovies: '#totalMovies',
     },
 
     modelEvents: {
-      "change": "updateStats",
-    },    
+      'change': 'updateStats',
+    },
 
     updateStats: function() {
       this.ui.pageNumber.text(this.model.get('page'));
       this.ui.totalPageNumber.text(this.model.get('totalPages'));
       this.ui.totalMovies.text(this.model.get('total'));
+      this.ui.inputQ.val(this.model.get('query'));
     },
 
 		/* Ui events hash */
@@ -68,7 +70,7 @@ function( Backbone, SearchHeaderTmpl, Communicator ) {
 		/* on render callback */
 		onRender: function() {},
 
-    search: function(e) {
+    search: function() {
       var query = this.ui.inputQ.val();
       //this.ui.inputQ.val('');
 
