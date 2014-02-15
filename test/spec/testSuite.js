@@ -6,6 +6,7 @@ define(function() {
 		specs: ['spec/collections/songs.js',
 		'spec/controllers/searcher.js',
 		'spec/exampleTest.js',
+		'spec/models/player.js',
 		'spec/models/search.js',
 		'spec/models/song.js',
 		'spec/regions/body.js',

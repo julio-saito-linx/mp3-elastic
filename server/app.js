@@ -30,6 +30,14 @@ app.use(express.static( path.join( __dirname, '../app') ));
 app.use(express.static( path.join( __dirname, '../.tmp') ));
 
 
+//static MP3 local files
+app.use('/MP3-01', express.static( '/media/julio/4 H-MP3 (1,36 TB)/' ));
+app.use('/MP3-02', express.static( '/media/julio/B21AB1E71AB1A92D/' ));
+app.use('/MP3-03', express.static( '/media/julio/2GB, new/' ));
+app.use('/MP3-04', express.static( '/media/julio/Files/' ));
+app.use('/MP3-05', express.static( '/home/julio/Música/' ));
+
+
 // route index.html
 app.get('/', function(req, res){
   res.sendfile( path.join( __dirname, '../app/index.html' ) );

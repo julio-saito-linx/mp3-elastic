@@ -1,3 +1,40 @@
-<div class="col-lg-6">
-  This is the player!!  
+<div class="col-lg-12">
+  <div class="row player-buttons">
+    <button class="btn btnPlay">
+      play
+    </button>
+    <button class="btn btnPause">
+      pause
+    </button>
+    <button class="btn btnVolDown">
+      vol-
+    </button>
+    <button class="btn btnVolUp">
+      vol+
+    </button>
+  </div>
+  <div class="row">
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+        <span class="sr-only">60% Complete</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    artist:{{ artist }}
+  </div>
+  <div class="row">
+    album:{{ album }}
+  </div>
+  <div class="row">
+    title:{{ title }}
+  </div>
+  <div class="row">
+    file.fullPath:{{ file.fullPath }}
+  </div>
 </div>
+
+<audio id="audio2" 
+   preload="auto">
+   <p>Your browser does not support the audio element</p>
+</audio>

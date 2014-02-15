@@ -12,6 +12,8 @@ define([
   'views/composite/songs',
   'views/item/search-header',
   'views/item/player',
+  'models/player',
+  'models/song',
   'models/search',
   'controllers/searcher',
   'routers/search-router',
@@ -22,14 +24,16 @@ function(
   Communicator,
   RSVP,
 
-  Body,
-  Header,
-  Player,
+  BodyRegion,
+  HeaderRegion,
+  PlayerRegion,
 
   SongsCollection,
   SongsView,
   HeaderView,
   PlayerView,
+  Player,
+  Song,
   SearchModel,
   SeacherController,
   SearchRouter )
@@ -42,9 +46,9 @@ function(
      Regions
   *  *********/
   App.addRegions({
-    player: new Player(),
-    header: new Header(),
-    body: new Body()
+    player_region: new PlayerRegion(),
+    header_region: new HeaderRegion(),
+    body_region: new BodyRegion()
   });
 
 
@@ -59,7 +63,9 @@ function(
 
     __MELD_LOG('App', Backbone.Marionette.Application.prototype, 10);
     //__MELD_LOG('songs', Backbone.Collection.prototype, 11);
-    __MELD_LOG('mediator', Communicator.mediator, 12);
+    //__MELD_LOG('mediator', Communicator.mediator, 12);
+    //__MELD_LOG('Player', Player.prototype, 20);
+    //__MELD_LOG('Song', Song.prototype, 21);
   });
 
 
@@ -73,36 +79,39 @@ function(
     //Collection
     this.songs = new SongsCollection();
 
+    //Searcher Controller
     this.searcher = new SeacherController({
       songs: this.songs
     });
 
+    //Searcher Router
     App.router = new SearchRouter({
       controller: this.searcher
     });
 
     //PLAYER region
+    this.player = new Player();
     var playerView = new PlayerView({
-      //model: this.searcher.searchModel
+      model: this.player
     });
-    this.player.show(playerView);
+    this.player_region.show(playerView);
 
     //HEADER region
     var searchHeader = new HeaderView({
       model: this.searcher.searchModel
     });
-    this.header.show(searchHeader);
+    this.header_region.show(searchHeader);
 
     //BODY region
     var songsView = new SongsView({
       collection: this.songs
     });
-
-    this.body.show(songsView);
+    this.body_region.show(songsView);
 
     //EVENTS
     Communicator.mediator.on('query:created', App.queryReceived, this);
     Communicator.mediator.on('app:navigate', App.navigate, this);
+    Communicator.mediator.on('player:play:id', this.player.playId, this.player);
   });
 
   App.queryReceived = function( query ) {
@@ -117,5 +126,6 @@ function(
     Backbone.history.start();
   });
 
+  window.App = App;
   return App;
 });

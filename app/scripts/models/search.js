@@ -18,7 +18,7 @@ function( Backbone ) {
       else{
         this.set('page', 1);
         this.set('size', 12);
-        this.set('sort', 'artist:asc,album:asc');
+        this.set('sort', 'artist:asc,album:asc,track:asc');
         this.set('totalPages', this.totalPages.bind(this));
       }
 		},

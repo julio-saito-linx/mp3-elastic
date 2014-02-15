@@ -1,8 +1,9 @@
 define([
   'backbone',
-  'hbs!tmpl/item/song_tmpl'
+  'hbs!tmpl/item/song_tmpl',
+  'communicator'
 ],
-function( Backbone, SongTmpl  ) {
+function( Backbone, SongTmpl, Communicator  ) {
   'use strict';
 
   /* Return a ItemView class definition */
@@ -18,13 +19,23 @@ function( Backbone, SongTmpl  ) {
         
 
     /* ui selector cache */
-    ui: {},
+    ui: {
+      button: '.btnPlay'
+    },
 
     /* Ui events hash */
-    events: {},
+    events: {
+      'click .btnPlay': 'play'
+    },
 
     /* on render callback */
-    onRender: function() {}
+    onRender: function() {},
+
+    play: function(e) {
+      var btn = $(e.target);
+      Communicator.mediator.trigger('player:play:id', btn.data('id'));
+    }
+
   });
 
 });
