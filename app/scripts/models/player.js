@@ -81,13 +81,14 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
 
 
     canplay: function () {
-      console.log('duration:', this.audio.duration);
+      clearTimeout(this.tId);
       this.totalLength = this.audio.duration;
-
       this.updateProgressBar();
     },
 
     updateProgressBar: function() {
+      clearTimeout(this.tId);
+
       var percentagePlayed = this.audio.currentTime / this.totalLength;
       Communicator.mediator.trigger('player:percentagePlayed', percentagePlayed);
       this.tId = setTimeout(this.updateProgressBar.bind(this), 1000);

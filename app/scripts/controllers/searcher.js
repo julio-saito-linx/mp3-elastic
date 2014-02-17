@@ -29,11 +29,13 @@ function(
     },
 
     search: function( page, query ) {
+
       this.searchModel.set('query', query);
       this.searchModel.set('page', page);
       
       this.elasticSearcher.searchElasticSearch(this.searchModel).then(function(data){
 
+        Communicator.mediator.trigger('layout:show:search');
         //resets Collection
         this.songs.reset(data);
 

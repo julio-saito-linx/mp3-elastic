@@ -68,8 +68,9 @@ function(
     });
 
     __MELD_LOG('App', Backbone.Marionette.Application.prototype, 10);
-    //__MELD_LOG('songs', Backbone.Collection.prototype, 11);
-    __MELD_LOG('mediator', Communicator.mediator, 12);
+    // __MELD_LOG('mediator', Communicator.mediator, 12);
+    // __MELD_LOG('controller', SeacherController.prototype, 11);
+    // __MELD_LOG('songs', Backbone.Collection.prototype, 11);
     //__MELD_LOG('Playlist', PlaylistView.prototype, 20);
     //__MELD_LOG('Player', Player.prototype, 20);
     //__MELD_LOG('Song', Song.prototype, 21);
@@ -110,33 +111,36 @@ function(
     });
     this.header_region.show(searchHeader);
 
-    //BODY region
-    this.playlist = new PlaylistView({
-      collection: this.playlistSongs
-    });
-    this.body_region.show(this.playlist);
-
-    this.searchResultView = new SearchResultView({
-      collection: this.songsSearched
-    });
-    this.body_region.show(this.searchResultView);
-    
+    //trick to pre-load both
+    this.showPlaylist();
+    this.showSearch();
 
     //EVENTS
     Communicator.mediator.on('query:created', App.queryReceived, this);
     Communicator.mediator.on('app:navigate', App.navigate, this);
     Communicator.mediator.on('player:play:id', this.player.playId, this.player);
     Communicator.mediator.on('player:play:playlist', this.player.playPlaylist, this.player);
-    Communicator.mediator.on('playlist:add:id', this.playlist.addId, this.playlist);
     Communicator.mediator.on('layout:show:search', App.showSearch, this);
     Communicator.mediator.on('layout:show:playlist', App.showPlaylist, this);
+    Communicator.mediator.on('player:song', App.setCurrentSong, this);
   });
 
+  App.setCurrentSong = function( song ) {
+    this.currentSong = song;
+  };
+
   App.showPlaylist = function() {
+    this.playlist = new PlaylistView({
+      collection: this.playlistSongs,
+      currentSong: this.currentSong
+    });
     this.body_region.show(this.playlist);
   };
 
   App.showSearch = function() {
+    this.searchResultView = new SearchResultView({
+      collection: this.songsSearched
+    });
     this.body_region.show(this.searchResultView);
   };
 

@@ -19,10 +19,13 @@ function(
 /* Return a CompositeView class definition */
   return Backbone.Marionette.CompositeView.extend({
 
-    initialize: function() {
+    initialize: function(options) {
       this.elasticSearcher = new ElasticSearcher('http://192.168.15.103:9200/music_library/song/');
+      this.currentSong = options.currentSong;
+
       Communicator.mediator.on('player:song', this.setSongSelected, this);
       Communicator.mediator.on('playlist:remove:id', this.removeId, this);
+      Communicator.mediator.on('playlist:add:id', this.addId, this);
     },
     
     itemView: PlaylistItem,
