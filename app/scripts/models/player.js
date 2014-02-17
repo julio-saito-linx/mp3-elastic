@@ -16,7 +16,6 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
 
       // audio events
       this.audio.addEventListener('canplay', this.canplay.bind(this), false);
-      this.audio.addEventListener('ontimeupdate', this.ontimeupdate.bind(this), false);
       this.audio.addEventListener('ended', this.ended.bind(this), false);
       
       this.elasticSearcher = new ElasticSearcher('http://192.168.15.103:9200/music_library/song/');
@@ -92,10 +91,6 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
       var percentagePlayed = this.audio.currentTime / this.totalLength;
       Communicator.mediator.trigger('player:percentagePlayed', percentagePlayed);
       this.tId = setTimeout(this.updateProgressBar.bind(this), 1000);
-    },
-
-    ontimeupdate: function () {
-      console.log(arguments);
     },
 
     ended: function () {

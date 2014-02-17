@@ -22,6 +22,7 @@ function(
     initialize: function() {
       this.elasticSearcher = new ElasticSearcher('http://192.168.15.103:9200/music_library/song/');
       Communicator.mediator.on('player:song', this.setSongSelected, this);
+      Communicator.mediator.on('playlist:remove:id', this.removeId, this);
     },
     
     itemView: PlaylistItem,
@@ -48,13 +49,35 @@ function(
       }.bind(this));
     },
 
+    removeId: function( id ) {
+      this.collection.remove(id);
+      this.render();
+    },
+
     /* on render callback */
     onRender: function() {},
 
+    onShow: function() {
+      this.setSongSelected();
+    },
+
     setSongSelected: function( song ) {
+      //new song comming
+      if(song){
+        this.currentSong = song;
+      }
+
+      //there is no current song
+      if(!this.currentSong){
+        return;
+      }
+
+      //remove class from all
       var jAllTr = $(this.el).find('tr');
       jAllTr.removeClass('success');
-      var jCurrentButtonSong = $(this.el).find('.btnPlay[data-id="'+ song.id +'"]');
+
+      //add class at the song that is playing
+      var jCurrentButtonSong = $(this.el).find('.btnPlay[data-id="'+ this.currentSong.id +'"]');
       jCurrentButtonSong.parent().parent().addClass('success');
     }
   });

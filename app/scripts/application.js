@@ -69,7 +69,8 @@ function(
 
     __MELD_LOG('App', Backbone.Marionette.Application.prototype, 10);
     //__MELD_LOG('songs', Backbone.Collection.prototype, 11);
-    //__MELD_LOG('mediator', Communicator.mediator, 12);
+    __MELD_LOG('mediator', Communicator.mediator, 12);
+    //__MELD_LOG('Playlist', PlaylistView.prototype, 20);
     //__MELD_LOG('Player', Player.prototype, 20);
     //__MELD_LOG('Song', Song.prototype, 21);
   });
