@@ -9,7 +9,10 @@ define([
   'regions/player',
 
   'collections/songs',
-  'views/composite/songs',
+  
+  'views/composite/search-result',
+  'views/composite/playlist',
+  
   'views/item/search-header',
   'views/item/player',
   'models/player',
@@ -29,7 +32,10 @@ function(
   PlayerRegion,
 
   SongsCollection,
-  SongsView,
+  
+  SearchResultView,
+  PlaylistView,
+  
   HeaderView,
   PlayerView,
   Player,
@@ -77,11 +83,12 @@ function(
     Communicator.mediator.trigger('APP:START');
 
     //Collection
-    this.songs = new SongsCollection();
+    this.songsSearched = new SongsCollection();
+    this.playlistSongs = new SongsCollection();
 
     //Searcher Controller
     this.searcher = new SeacherController({
-      songs: this.songs
+      songs: this.songsSearched
     });
 
     //Searcher Router
@@ -103,16 +110,34 @@ function(
     this.header_region.show(searchHeader);
 
     //BODY region
-    var songsView = new SongsView({
-      collection: this.songs
+    this.playlist = new PlaylistView({
+      collection: this.playlistSongs
     });
-    this.body_region.show(songsView);
+    this.body_region.show(this.playlist);
+
+    this.searchResultView = new SearchResultView({
+      collection: this.songsSearched
+    });
+    this.body_region.show(this.searchResultView);
+    
 
     //EVENTS
     Communicator.mediator.on('query:created', App.queryReceived, this);
     Communicator.mediator.on('app:navigate', App.navigate, this);
     Communicator.mediator.on('player:play:id', this.player.playId, this.player);
+    Communicator.mediator.on('player:play:playlist', this.player.playPlaylist, this.player);
+    Communicator.mediator.on('playlist:add:id', this.playlist.addId, this.playlist);
+    Communicator.mediator.on('layout:show:search', App.showSearch, this);
+    Communicator.mediator.on('layout:show:playlist', App.showPlaylist, this);
   });
+
+  App.showPlaylist = function() {
+    this.body_region.show(this.playlist);
+  };
+
+  App.showSearch = function() {
+    this.body_region.show(this.searchResultView);
+  };
 
   App.queryReceived = function( query ) {
     this.searcher.setQuery( query );

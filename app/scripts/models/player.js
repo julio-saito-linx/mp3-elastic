@@ -25,6 +25,8 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
       Communicator.mediator.on('player:pause', this.pause, this);
       Communicator.mediator.on('player:voldown', this.voldown, this);
       Communicator.mediator.on('player:volup', this.volup, this);
+      Communicator.mediator.on('player:prev', this.prev, this);
+      Communicator.mediator.on('player:next', this.next, this);
 
 		},
 
@@ -34,6 +36,32 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
 
     pause:function() {
       this.audio.pause();
+    },
+
+    prev:function() {
+      var index = this.currentIndex;
+      var songs = this.songs;
+      var nextIndex = index - 1;
+
+      if(nextIndex < 0){
+        nextIndex = songs.length-1;
+      }
+
+      var newSong = songs.at(nextIndex);
+      this.playSong(newSong);
+    },
+
+    next:function() {
+      var index = this.currentIndex;
+      var songs = this.songs;
+      var nextIndex = index + 1;
+
+      if(nextIndex > songs.length-1){
+        nextIndex = 0;
+      }
+
+      var newSong = songs.at(nextIndex);
+      this.playSong(newSong);
     },
 
     voldown:function() {
@@ -71,7 +99,7 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
     },
 
     ended: function () {
-      console.log('end of song');
+      this.next();
     },
 
 		defaults: {},
@@ -80,17 +108,29 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
       //get path
       this.elasticSearcher.getIdElasticSearch( id ).then(function( songData ) {
         this.song = new Song( songData );
-
-        this.audio.src = this._convertUrl( songData.file.fullPath );
-        this.audio.play();
-
-        this.song.set('audio', this.audio);
-
-        Communicator.mediator.trigger('player:song', this.song, this.audio);
+        this.playSong(this.song);
 
       }.bind(this))
     },
 
+    playSong: function( song ) {
+      this.song = song;
+      //set the current index if exists
+      if(this.songs && this.songs.indexOf(this.song) >= 0){
+        this.currentIndex = this.songs.indexOf(this.song);
+      }
+
+      this.audio.src = this._convertUrl( this.song.get('file').fullPath );
+      this.audio.play();
+      this.song.set('audio', this.audio);
+      Communicator.mediator.trigger('player:song', this.song, this.audio);
+    },
+
+    playPlaylist: function( songs, song ) {
+      this.songs = songs;
+      this.song = song;
+      this.playSong(this.song);
+    },
 
 
     /*

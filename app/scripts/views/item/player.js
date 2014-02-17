@@ -37,18 +37,24 @@ function( Backbone, PlayerTmpl, Communicator ) {
   	ui: {
       progress_bar: '.progress-bar',
       volume: '.volume',
-      btnPlay : '.btnPlay',
-      btnPause : '.btnPause',
-      btnVolDown : '.btnVolDown',
-      btnVolUp : '.btnVolUp',
+      btnPlay: '.btnPlay',
+      btnPause: '.btnPause',
+      btnPrev: '.btnPrev',
+      btnNext: '.btnNext',
+      btnVolDown: '.btnVolDown',
+      btnVolUp: '.btnVolUp',
     },
 
 		/* Ui events hash */
 		events: {
       'click .btnPlay' : 'btnPlayClicked',
       'click .btnPause' : 'btnPauseClicked',
+      'click .btnPrev' : 'btnPrevClicked',
+      'click .btnNext' : 'btnNextClicked',
       'click .btnVolDown' : 'btnVolDownClicked',
       'click .btnVolUp' : 'btnVolUpClicked',
+      'click .btnShowPlaylist' : 'btnShowPlaylist',
+      'click .btnShowSearch' : 'btnShowSearch',
     },
 
     btnPlayClicked: function() {
@@ -59,12 +65,28 @@ function( Backbone, PlayerTmpl, Communicator ) {
       Communicator.mediator.trigger('player:pause');
     },
 
+    btnPrevClicked: function() {
+      Communicator.mediator.trigger('player:prev');
+    },
+
+    btnNextClicked: function() {
+      Communicator.mediator.trigger('player:next');
+    },
+
     btnVolDownClicked: function() {
       Communicator.mediator.trigger('player:voldown');
     },
 
     btnVolUpClicked: function() {
       Communicator.mediator.trigger('player:volup');
+    },
+
+    btnShowSearch: function() {
+      Communicator.mediator.trigger('layout:show:search');
+    },
+
+    btnShowPlaylist: function() {
+      Communicator.mediator.trigger('layout:show:playlist');
     },
 
 

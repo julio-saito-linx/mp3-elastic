@@ -13,9 +13,13 @@ define(function() {
 		'spec/regions/header.js',
 		'spec/regions/player.js',
 		'spec/routers/search-router.js',
-		'spec/views/composite/songs.js',
+		'spec/views/composite/playlist.js',
+		'spec/views/composite/search-result.js',
+		'spec/views/composite/serch-result.js',
 		'spec/views/item/player.js',
+		'spec/views/item/playlist-item.js',
 		'spec/views/item/search-header.js',
+		'spec/views/item/search-result-item.js',
 		'spec/views/item/song.js'
 		]
 	};
