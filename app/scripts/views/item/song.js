@@ -10,7 +10,6 @@ function( Backbone, SongTmpl, Communicator  ) {
   return Backbone.Marionette.ItemView.extend({
 
     initialize: function() {
-      console.log('initialize a Song ItemView');
     },
     
     template: SongTmpl,

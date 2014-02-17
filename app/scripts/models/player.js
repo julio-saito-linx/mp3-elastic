@@ -11,15 +11,15 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
 	return Backbone.Model.extend({
 		initialize: function() {
       this.audio = new Audio();
-      this.volume = 0.50;
-      this.audio.volume = this.volume;
+      this.volume = 50;
+      this.audio.volume = this.volume / 100;
 
       // audio events
       this.audio.addEventListener('canplay', this.canplay.bind(this), false);
       this.audio.addEventListener('ontimeupdate', this.ontimeupdate.bind(this), false);
       this.audio.addEventListener('ended', this.ended.bind(this), false);
       
-      this.elasticSearcher = new ElasticSearcher('http://localhost:9200/music_library/song/');
+      this.elasticSearcher = new ElasticSearcher('http://192.168.15.103:9200/music_library/song/');
 
       Communicator.mediator.on('player:play', this.play, this);
       Communicator.mediator.on('player:pause', this.pause, this);
@@ -37,16 +37,18 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
     },
 
     voldown:function() {
-      if(this.volume >= 0.05){
-        this.volume -= 0.05;
-        this.audio.volume = this.volume;
+      if(this.volume > 0){
+        this.volume -= 5;
+        this.audio.volume = this.volume / 100;
+        Communicator.mediator.trigger('player:volumeChanged', this.volume);
       }
     },
 
     volup:function() {
-      if(this.volume <= 0.95){
-        this.volume += 0.05;
-        this.audio.volume = this.volume;
+      if(this.volume < 100){
+        this.volume += 5;
+        this.audio.volume = this.volume / 100;
+        Communicator.mediator.trigger('player:volumeChanged', this.volume);
       }
     },
 
@@ -78,10 +80,14 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
       //get path
       this.elasticSearcher.getIdElasticSearch( id ).then(function( songData ) {
         this.song = new Song( songData );
-        Communicator.mediator.trigger('player:song', this.song);
 
         this.audio.src = this._convertUrl( songData.file.fullPath );
         this.audio.play();
+
+        this.song.set('audio', this.audio);
+
+        Communicator.mediator.trigger('player:song', this.song, this.audio);
+
       }.bind(this))
     },
 

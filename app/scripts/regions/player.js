@@ -8,7 +8,6 @@ function( Backbone ) {
 	return Backbone.Marionette.Region.extend({
 
 		initialize: function() {
-			console.log("initialize a Player Region");
 		},
 
     el:'#player'

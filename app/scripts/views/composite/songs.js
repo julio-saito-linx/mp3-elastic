@@ -10,18 +10,17 @@ function( Backbone, Song, SongsTmpl  ) {
 	return Backbone.Marionette.CompositeView.extend({
 
 		initialize: function() {
-			console.log("initialize a Songs CompositeView");
 		},
 		
-    	itemView: Song,
-    	
-    	template: SongsTmpl,
+  	itemView: Song,
+  	
+  	template: SongsTmpl,
 
-    	/* ui selector cache */
-    	ui: {},
+  	/* ui selector cache */
+  	ui: {},
 
-    	/* where are we appending the items views */
-    	itemViewContainer: "tbody",
+  	/* where are we appending the items views */
+  	itemViewContainer: "tbody",
 
 		/* Ui events hash */
 		events: {},

@@ -14,7 +14,7 @@ function(
 	return Backbone.Marionette.Controller.extend({
 
 		initialize: function ( options ) {
-      this.elasticSearcher = new ElasticSearcher('http://localhost:9200/music_library/song/');
+      this.elasticSearcher = new ElasticSearcher('http://192.168.15.103:9200/music_library/song/');
       this.searchModel = new SearchModel();
       this.songs = options.songs;
 

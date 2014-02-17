@@ -10,13 +10,17 @@ function( Backbone, PlayerTmpl, Communicator ) {
 	return Backbone.Marionette.ItemView.extend({
 
 		initialize: function() {
-			console.log("initialize a Player ItemView");
       Communicator.mediator.on('player:song', this.renderSong, this);
       Communicator.mediator.on('player:percentagePlayed', this.updateProgessBar, this);
+      Communicator.mediator.on('player:volumeChanged', this.volumeChanged, this);
 		},
 
     updateProgessBar: function( percentage ) {
       this.ui.progress_bar.css('width', percentage*100 + '%');
+    },
+
+    volumeChanged: function( percentage ) {
+      this.ui.volume.text( percentage );
     },
 
     renderSong: function( songModel ) {
@@ -32,6 +36,7 @@ function( Backbone, PlayerTmpl, Communicator ) {
   	/* ui selector cache */
   	ui: {
       progress_bar: '.progress-bar',
+      volume: '.volume',
       btnPlay : '.btnPlay',
       btnPause : '.btnPause',
       btnVolDown : '.btnVolDown',
