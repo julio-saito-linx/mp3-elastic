@@ -3,14 +3,16 @@ define([
   'libs/elastic_searcher',
   'models/song',
   'views/item/playlist-item',
-  'hbs!tmpl/composite/playlist_tmpl'
+  'hbs!tmpl/composite/playlist_tmpl',
+  'communicator'
 ],
 function(
   Backbone,
   ElasticSearcher,
   Song,
   PlaylistItem,
-  PlaylistTmpl
+  PlaylistTmpl,
+  Communicator
 ){
   'use strict';
 
@@ -19,6 +21,7 @@ function(
 
     initialize: function() {
       this.elasticSearcher = new ElasticSearcher('http://192.168.15.103:9200/music_library/song/');
+      Communicator.mediator.on('player:song', this.setSongSelected, this);
     },
     
     itemView: PlaylistItem,
@@ -27,7 +30,9 @@ function(
     
 
     /* ui selector cache */
-    ui: {},
+    ui: {
+      allButtonsPlay: '.btnPlay'
+    },
 
     /* where are we appending the items views */
     itemViewContainer: 'tbody',
@@ -44,6 +49,13 @@ function(
     },
 
     /* on render callback */
-    onRender: function() {}
+    onRender: function() {},
+
+    setSongSelected: function( song ) {
+      var jAllTr = $(this.el).find('tr');
+      jAllTr.removeClass('success');
+      var jCurrentButtonSong = $(this.el).find('.btnPlay[data-id="'+ song.id +'"]');
+      jCurrentButtonSong.parent().parent().addClass('success');
+    }
   });
 });
