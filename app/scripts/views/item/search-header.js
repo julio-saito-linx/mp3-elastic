@@ -14,6 +14,7 @@ function( Backbone, SearchHeaderTmpl, Communicator ) {
 		},
 		
     onShow: function () {
+      this.updateStats();
       $(document).on('keydown', this.processShortcut.bind(this));
     },
 

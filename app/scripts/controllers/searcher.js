@@ -58,7 +58,7 @@ function(
           Communicator.mediator.trigger('playlist:add:song', song);
         });
 
-      this.searchModel.set('size', 12);
+      this.searchModel.set('size', 8);
 
       }.bind(this), function() {
         console.log('ERROR, see network for more details...', arguments);

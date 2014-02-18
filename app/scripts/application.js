@@ -105,12 +105,6 @@ function(
     });
     this.player_region.show(playerView);
 
-    //HEADER region
-    var searchHeader = new HeaderView({
-      model: this.searcher.searchModel
-    });
-    this.header_region.show(searchHeader);
-
     //trick to pre-load both
     this.showPlaylist();
     this.showSearch();
@@ -136,6 +130,9 @@ function(
       currentSong: this.currentSong
     });
     this.body_region.show(this.playlist);
+
+    //HEADER region
+    this.header_region.close();
   };
 
   App.showSearch = function() {
@@ -143,6 +140,12 @@ function(
       collection: this.songsSearched
     });
     this.body_region.show(this.searchResultView);
+
+    //HEADER region
+    var searchHeader = new HeaderView({
+      model: this.searcher.searchModel
+    });
+    this.header_region.show(searchHeader);
   };
 
   App.queryReceived = function( query ) {

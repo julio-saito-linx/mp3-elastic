@@ -13,6 +13,9 @@ function( Backbone, PlayerTmpl, Communicator ) {
       Communicator.mediator.on('player:song', this.renderSong, this);
       Communicator.mediator.on('player:percentagePlayed', this.updateProgessBar, this);
       Communicator.mediator.on('player:volumeChanged', this.volumeChanged, this);
+
+      Communicator.mediator.on('layout:show:search', this.showSearch, this);
+      Communicator.mediator.on('layout:show:playlist', this.showPlaylist, this);
 		},
 
     updateProgessBar: function( percentage ) {
@@ -43,6 +46,8 @@ function( Backbone, PlayerTmpl, Communicator ) {
       btnNext: '.btnNext',
       btnVolDown: '.btnVolDown',
       btnVolUp: '.btnVolUp',
+      btnShowPlaylist: '.btnShowPlaylist',
+      btnShowSearch: '.btnShowSearch',
     },
 
 		/* Ui events hash */
@@ -89,6 +94,14 @@ function( Backbone, PlayerTmpl, Communicator ) {
       Communicator.mediator.trigger('layout:show:playlist');
     },
 
+    showSearch: function() {
+      this.ui.btnShowSearch.addClass('active');
+      this.ui.btnShowPlaylist.removeClass('active');
+    },
+    showPlaylist: function() {
+      this.ui.btnShowSearch.removeClass('active');
+      this.ui.btnShowPlaylist.addClass('active');
+    },
 
     updatePlayerInfo: function() {
       this.render();
