@@ -7,12 +7,10 @@ MP3-Elastic
 ###Events
 
 ####Search
-  * query:created
+  * query:created (elasticQuery: string)
   - Routes
-   * app:navigate
-    
-    http://localhost:9000/#search/[ page ]/[ query ]
-
+   * app:navigate (url: string)
+      * ex: http://localhost:9000/#search/[ page ]/[ query ]
   - Pagination
    * page:next
    * page:prev
@@ -28,24 +26,21 @@ MP3-Elastic
 ####Player
   * player:next
   * player:pause
-  * player:percentagePlayed
+  * player:percentagePlayed (percentage: integer [ 0-100 ] )
   * player:play
-  * player:play:id
-  * player:play:playlist
+  * player:play:id (id: integer)
+  * player:play:playlist (songList: songCollection, currentSong: songModel)
   * player:prev
-  * player:song
-  * player:voldown
-  * player:volumeChanged
+  * player:song (song model, audio)
   * player:volup
+  * player:voldown
+  * player:volumeChanged ( volume: integer )
 
 ----------
 
 ####Playlist
   * playlist:add:all
-  * playlist:add:id
-  * playlist:add:song
+  * playlist:add:id (id: integer)
+  * playlist:add:song (song: songModel)
   * playlist:remove:all
-  * playlist:remove:id
-
-----------
-
+  * playlist:remove:id (id: integer)
