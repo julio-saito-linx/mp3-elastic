@@ -10,6 +10,9 @@ MP3-Elastic
   * query:created
   - Routes
    * app:navigate
+    
+    http://localhost:9000/#search/[ page ]/[ query ]
+
   - Pagination
    * page:next
    * page:prev
