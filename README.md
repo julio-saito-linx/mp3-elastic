@@ -1,19 +1,28 @@
 MP3-Elastic
 ===========
+- search music on a simple elastic search database.
+- can play songs over network
+- yo-marionette backbone.js generated
 
-- yo-marionette generated
-- access mp3 database on a local elasticsearch DB
+###Events
 
-Events:
-  * app:navigate
+####Search
   * query:created
+  - Routes
+   * app:navigate
+  - Pagination
+   * page:next
+   * page:prev
 
+----------
+
+####Layout
   * layout:show:playlist
   * layout:show:search
 
-  * page:next
-  * page:prev
+----------
 
+####Player
   * player:next
   * player:pause
   * player:percentagePlayed
@@ -26,8 +35,14 @@ Events:
   * player:volumeChanged
   * player:volup
 
+----------
+
+####Playlist
   * playlist:add:all
   * playlist:add:id
   * playlist:add:song
   * playlist:remove:all
   * playlist:remove:id
+
+----------
+
