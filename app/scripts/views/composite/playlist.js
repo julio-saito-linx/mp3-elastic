@@ -25,7 +25,9 @@ function(
 
       Communicator.mediator.on('player:song', this.setSongSelected, this);
       Communicator.mediator.on('playlist:remove:id', this.removeId, this);
+      Communicator.mediator.on('playlist:remove:all', this.removeAll, this);
       Communicator.mediator.on('playlist:add:id', this.addId, this);
+      Communicator.mediator.on('playlist:add:song', this.addSong, this);
     },
     
     itemView: PlaylistItem,
@@ -42,14 +44,25 @@ function(
     itemViewContainer: 'tbody',
 
     /* Ui events hash */
-    events: {},
+    events: {
+      'click .btnRemoveAll': 'removeAll'
+    },
+
+    removeAll: function() {
+      this.collection.reset();
+      this.render();
+    },
 
     addId: function( id ) {
       //get path
       this.elasticSearcher.getIdElasticSearch( id ).then(function( songData ) {
         this.song = new Song( songData );
-        this.collection.add(this.song);
+        this.addSong( this.song );
       }.bind(this));
+    },
+
+    addSong: function( song ) {
+      this.collection.add( song );
     },
 
     removeId: function( id ) {

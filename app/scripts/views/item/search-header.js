@@ -63,7 +63,8 @@ function( Backbone, SearchHeaderTmpl, Communicator ) {
       'click #btnSubmit': 'search',
       'click .btnPrevPage': 'prevPage',
       'click .btnNextPage': 'nextPage',
-      'keydown #q': 'stopPropagation'
+      'keydown #q': 'stopPropagation',
+      'click .btnAddAllPages': 'btnAddAllPages'
     },
 
 		/* on render callback */
@@ -87,6 +88,10 @@ function( Backbone, SearchHeaderTmpl, Communicator ) {
       if(e.which === 13){
         this.search();
       }
+    },
+
+    btnAddAllPages: function() {
+      Communicator.mediator.trigger('playlist:add:all');
     }
 
 	});

@@ -1,9 +1,20 @@
 define([
 	'backbone',
+  'libs/elastic_searcher',
+  'models/search',
+  'models/song',
 	'views/item/search-result-item',
-	'hbs!tmpl/composite/search-result_tmpl'
+	'hbs!tmpl/composite/search-result_tmpl',
+  'communicator'
 ],
-function( Backbone, SearchResultItem, SearchResultTmpl  ) {
+function(
+  Backbone,
+  ElasticSearcher,
+  SearchModel,
+  Song,
+  SearchResultItem,
+  SearchResultTmpl,
+  Communicator  ) {
     'use strict';
 
 	/* Return a CompositeView class definition */
@@ -24,7 +35,15 @@ function( Backbone, SearchResultItem, SearchResultTmpl  ) {
     itemViewContainer: "tbody",
 
 		/* Ui events hash */
-		events: {},
+    events: {
+      'click .btnAddThisPage': 'btnAddThisPageClicked',
+    },
+
+    btnAddThisPageClicked: function() {
+      this.collection.each(function( song ) {
+        Communicator.mediator.trigger('playlist:add:song', song);
+      })
+    },
 
 		/* on render callback */
 		onRender: function() {}

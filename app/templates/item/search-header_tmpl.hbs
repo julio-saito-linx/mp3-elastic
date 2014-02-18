@@ -2,21 +2,22 @@
   <div class="input-group">
     <input id="q" type="text" class="form-control">
     <span class="input-group-btn">
-      <button id="btnSubmit" class="btn btn-default" type="submit">Go!</button>
+      <button id="btnSubmit" class="btn btn-default" type="submit">Search</button>
     </span>
   </div><!-- /input-group -->
 </div><!-- /.col-lg-6 -->
 <div class="col-lg-2">
   <button class="btn btnPrevPage">
-    prev
-    {{!-- <span class="glyphicon glyphicon-chevron-left"></span> --}}
+    &lt;&lt;
   </button>
   <button class="btn btnNextPage">
-    next
-    {{!-- <span class="glyphicon glyphicon-chevron-right"></span> --}}
+    &gt;&gt;
   </button>
 </div><!-- /.col-lg-6 -->
-<div class="col-lg-4 stats">
+<div class="col-lg-3 stats">
   <span id="pageNumber">{{ page }}</span> of <span id="totalPageNumber">{{ totalPages }}</span>
   ( <span id="totalMovies">{{ total }}</span> songs )
+</div>
+<div class="col-lg-1">
+  <button class="btnAddAllPages">Add to playlist</button>
 </div>

@@ -2,12 +2,14 @@ define([
 	'backbone',
   'libs/elastic_searcher',
   'models/search',
+  'models/song',
   'communicator',
 ],
 function(
   Backbone,
   ElasticSearcher,
   SearchModel,
+  Song,
   Communicator
 ){
   'use strict';
@@ -43,6 +45,24 @@ function(
         console.log('ERROR, see network for more details...', arguments);
       });
 
+    },
+
+    addAllToPlaylist: function() {
+      this.searchModel.set('page', 1);
+      this.searchModel.set('size', 600);
+      
+      this.elasticSearcher.searchElasticSearch(this.searchModel).then(function(data){
+
+        data.forEach(function( songData ) {
+          var song = new Song( songData );
+          Communicator.mediator.trigger('playlist:add:song', song);
+        });
+
+      this.searchModel.set('size', 12);
+
+      }.bind(this), function() {
+        console.log('ERROR, see network for more details...', arguments);
+      });
     },
 
     prevPage: function() {

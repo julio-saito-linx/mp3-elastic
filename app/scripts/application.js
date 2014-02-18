@@ -123,6 +123,7 @@ function(
     Communicator.mediator.on('layout:show:search', App.showSearch, this);
     Communicator.mediator.on('layout:show:playlist', App.showPlaylist, this);
     Communicator.mediator.on('player:song', App.setCurrentSong, this);
+    Communicator.mediator.on('playlist:add:all', this.addAllSearchToPlaylist, this);
   });
 
   App.setCurrentSong = function( song ) {
@@ -146,6 +147,10 @@ function(
 
   App.queryReceived = function( query ) {
     this.searcher.setQuery( query );
+  };
+
+  App.addAllSearchToPlaylist = function() {
+    this.searcher.addAllToPlaylist();
   };
 
   App.navigate = function( url, trigger ) {
