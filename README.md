@@ -4,6 +4,14 @@ MP3-Elastic
 - can play songs over network
 - yo-marionette backbone.js generated
 
+###Instalation
+  * install ElasticSearch
+  * install node.js
+  * run: sudo npm install
+  * import your music with: https://github.com/saitodisse/elasticXbmcMoviesImporter
+  * run: grunt
+  * open: http://localhost:9000/
+
 ###Events
 
 ####Search
