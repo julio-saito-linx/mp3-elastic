@@ -23,12 +23,16 @@ require.config({
         bootstrap: {
             deps: ['jquery'],
             exports: 'jquery'
+        },
+        dragdealer: {
+            exports: 'Dragdealer'
         }
     },
 
     paths: {
         jquery: '../bower_components/jquery/jquery',
         backbone: '../bower_components/backbone-amd/backbone',
+        dragdealer: '../bower_components/dragdealer/src/dragdealer',
         underscore: '../bower_components/underscore-amd/underscore',
         rsvp: '../bower_components/rsvp/rsvp.amd',
         meld_log: '../scripts/libs/meld_log',

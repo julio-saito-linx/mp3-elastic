@@ -1,9 +1,10 @@
 define([
 	'backbone',
 	'hbs!tmpl/item/player_tmpl',
-  'communicator'
+  'communicator',
+  'dragdealer'
 ],
-function( Backbone, PlayerTmpl, Communicator ) {
+function( Backbone, PlayerTmpl, Communicator, Dragdealer ) {
     'use strict';
 
 	/* Return a ItemView class definition */
@@ -18,18 +19,39 @@ function( Backbone, PlayerTmpl, Communicator ) {
       Communicator.mediator.on('layout:show:playlist', this.showPlaylist, this);
 		},
 
-    updateProgessBar: function( percentage ) {
-      this.ui.progress_bar.css('width', percentage*100 + '%');
+    updateProgessBar: function( audioInfo ) {
+      this.dragdealer.setValue(audioInfo.percentagePlayed, 0, true, false);
+      this.ui.handle.text(audioInfo.currentTimeFormated);
+
+        // {
+        //   percentagePlayed: percentagePlayed,
+        //   currentTime: this.audio.currentTime,
+        //   totalLength: this.totalLength,
+        //   currentTimeFormated: pretty_minutes(this.audio.currentTime),
+        //   totalLengthFormated: pretty_minutes(this.totalLength),
+        // });
+
     },
 
     volumeChanged: function( percentage ) {
       this.ui.volume.text( percentage );
     },
 
+    dragdealerHandleCallback: function(x) {
+      console.log('dragdealerHandleCallback', x)
+      Communicator.mediator.trigger('player:changeCurrentPosition', x);
+    },
+
     renderSong: function( songModel ) {
       this.model = songModel;
       this.render();
-      this.ui.progress_bar.css('width', '0%');
+      
+      this.dragdealer = new Dragdealer(this.ui.slider[0], {
+        loose: true,
+        callback: this.dragdealerHandleCallback.bind(this)
+      });
+
+      window.d = this.dragdealer;
     },
 		
     className: 'bs-example row',
@@ -38,7 +60,6 @@ function( Backbone, PlayerTmpl, Communicator ) {
 
   	/* ui selector cache */
   	ui: {
-      progress_bar: '.progress-bar',
       volume: '.volume',
       btnPlay: '.btnPlay',
       btnPause: '.btnPause',
@@ -48,6 +69,8 @@ function( Backbone, PlayerTmpl, Communicator ) {
       btnVolUp: '.btnVolUp',
       btnShowPlaylist: '.btnShowPlaylist',
       btnShowSearch: '.btnShowSearch',
+      slider: '#demo-simple-slider',
+      handle: '.handle',
     },
 
 		/* Ui events hash */
@@ -108,8 +131,8 @@ function( Backbone, PlayerTmpl, Communicator ) {
     },
 
 		/* on render callback */
-		onRender: function() {
-    }
+    onRender: function() {
+    },
 	});
 
 });

@@ -15,7 +15,9 @@
     "mocha": "~1.12.0",
     "chai": "~1.7.2",
     "sinon": "~1.7.3",
-    "rsvp": "~3.0.1"
+    "rsvp": "~3.0.1",
+    "dragdealer": "git@github.com:saitodisse/dragdealer.git#~0.9.61",
+    "bootstrap-sass": "twbs/bootstrap-sass#~3.1.1"
   },
   "devDependencies": {},
   "directory": "bower_components"

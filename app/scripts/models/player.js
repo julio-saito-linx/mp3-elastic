@@ -2,9 +2,11 @@ define([
 	'backbone',
   'libs/elastic_searcher',
   'models/song',
-  'communicator'
+  'communicator',
+  'libs/pretty_size',
+  'libs/pretty_minutes'
 ],
-function( Backbone, ElasticSearcher, Song, Communicator ) {
+function( Backbone, ElasticSearcher, Song, Communicator, pretty_size, pretty_minutes ) {
     'use strict';
 
 	/* Return a model class definition */
@@ -26,14 +28,20 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
       Communicator.mediator.on('player:volup', this.volup, this);
       Communicator.mediator.on('player:prev', this.prev, this);
       Communicator.mediator.on('player:next', this.next, this);
+      Communicator.mediator.on('player:changeCurrentPosition', this.changeCurrentPosition, this);
 
 		},
 
     play:function() {
+
+      clearTimeout(this.tId);
+      this.tId = setTimeout(this.updateProgressBar.bind(this), 1000);
+
       this.audio.play();
     },
 
     pause:function() {
+      clearTimeout(this.tId);
       this.audio.pause();
     },
 
@@ -90,8 +98,19 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
       clearTimeout(this.tId);
 
       var percentagePlayed = this.audio.currentTime / this.totalLength;
-      Communicator.mediator.trigger('player:percentagePlayed', percentagePlayed);
+      Communicator.mediator.trigger('player:percentagePlayed',
+        {
+          percentagePlayed: percentagePlayed,
+          currentTime: this.audio.currentTime,
+          totalLength: this.totalLength,
+          currentTimeFormated: pretty_minutes(this.audio.currentTime),
+          totalLengthFormated: pretty_minutes(this.totalLength),
+        });
       this.tId = setTimeout(this.updateProgressBar.bind(this), 1000);
+    },
+
+    changeCurrentPosition: function(x) {
+      this.audio.currentTime = x * this.totalLength;
     },
 
     ended: function () {
