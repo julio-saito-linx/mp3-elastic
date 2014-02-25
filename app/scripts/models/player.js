@@ -116,7 +116,7 @@ function( Backbone, ElasticSearcher, Song, Communicator ) {
         this.currentIndex = this.songs.indexOf(this.song);
       }
 
-      this.audio.src = this._convertUrl( this.song.get('file').fullPath );
+      this.audio.src = this._convertUrl( this.song.get('filename') );
       this.audio.play();
       this.song.set('audio', this.audio);
       Communicator.mediator.trigger('player:song', this.song, this.audio);
