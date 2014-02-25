@@ -34,7 +34,7 @@ MP3-Elastic
 ####Player
   * player:next
   * player:pause
-  * player:percentagePlayed (percentage: integer [ 0-100 ] )
+  * player:currentTimeChanged (percentage: integer [ 0-100 ] )
   * player:play
   * player:play:id (id: integer)
   * player:play:playlist (songList: songCollection, currentSong: songModel)

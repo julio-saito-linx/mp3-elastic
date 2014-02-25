@@ -12,46 +12,55 @@ function( Backbone, PlayerTmpl, Communicator, Dragdealer ) {
 
 		initialize: function() {
       Communicator.mediator.on('player:song', this.renderSong, this);
-      Communicator.mediator.on('player:percentagePlayed', this.updateProgessBar, this);
+      Communicator.mediator.on('player:currentTimeChanged', this.updateProgessBar, this);
       Communicator.mediator.on('player:volumeChanged', this.volumeChanged, this);
 
       Communicator.mediator.on('layout:show:search', this.showSearch, this);
       Communicator.mediator.on('layout:show:playlist', this.showPlaylist, this);
 		},
 
+    /*
+      {
+        currentTimeChanged: currentTimeChanged,
+        currentTime: this.audio.currentTime,
+        totalLength: this.totalLength,
+        currentTimeFormated: pretty_minutes(this.audio.currentTime),
+        totalLengthFormated: pretty_minutes(this.totalLength),
+      });
+    */
     updateProgessBar: function( audioInfo ) {
-      this.dragdealer.setValue(audioInfo.percentagePlayed, 0, true, false);
-      this.ui.handle.text(audioInfo.currentTimeFormated);
-
-        // {
-        //   percentagePlayed: percentagePlayed,
-        //   currentTime: this.audio.currentTime,
-        //   totalLength: this.totalLength,
-        //   currentTimeFormated: pretty_minutes(this.audio.currentTime),
-        //   totalLengthFormated: pretty_minutes(this.totalLength),
-        // });
-
+      this.durationSlider.setValue(audioInfo.currentTimeChanged, 0, true, false);
+      this.ui.durationHandle.text(audioInfo.currentTimeFormated);
     },
 
     volumeChanged: function( percentage ) {
-      this.ui.volume.text( percentage );
+      this.volumeSlider.setValue(percentage/100, 0, true, false);
+      this.ui.volumeHandle.text(percentage + "%");
     },
 
-    dragdealerHandleCallback: function(x) {
-      console.log('dragdealerHandleCallback', x)
+    durationSliderHandleCallback: function(x) {
       Communicator.mediator.trigger('player:changeCurrentPosition', x);
+    },
+
+    volumeSliderHandleCallback: function(x) {
+      this.volumeChanged(Math.floor(x*100));
+      Communicator.mediator.trigger('player:volume', x);
     },
 
     renderSong: function( songModel ) {
       this.model = songModel;
       this.render();
       
-      this.dragdealer = new Dragdealer(this.ui.slider[0], {
+      this.durationSlider = new Dragdealer(this.ui.duration_slider[0], {
         loose: true,
-        callback: this.dragdealerHandleCallback.bind(this)
+        callback: this.durationSliderHandleCallback.bind(this)
       });
 
-      window.d = this.dragdealer;
+      this.volumeSlider = new Dragdealer(this.ui.volume_slider[0], {
+        steps: 21,
+        snap: true,
+        callback: this.volumeSliderHandleCallback.bind(this)
+      });
     },
 		
     className: 'bs-example row',
@@ -69,8 +78,10 @@ function( Backbone, PlayerTmpl, Communicator, Dragdealer ) {
       btnVolUp: '.btnVolUp',
       btnShowPlaylist: '.btnShowPlaylist',
       btnShowSearch: '.btnShowSearch',
-      slider: '#demo-simple-slider',
-      handle: '.handle',
+      duration_slider: '#duration-slider',
+      volume_slider: '#volume-slider',
+      durationHandle: '#duration-handle',
+      volumeHandle: '#volume-handle',
     },
 
 		/* Ui events hash */

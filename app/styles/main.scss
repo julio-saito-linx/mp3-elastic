@@ -46,3 +46,20 @@
 }
 
 @import '../bower_components/dragdealer/src/dragdealer.css';
+
+.dragdealer {
+  position: relative;
+  height: 20px;
+  background: #EEE;
+}
+.dragdealer .red-bar {
+  width: 63px;
+  height: 20px;
+  background: #2a6496;
+  color: #FFF;
+  font-size: 15px;
+  line-height: 20px;
+  text-align: center;
+}
+
+

@@ -29,6 +29,7 @@ function( Backbone, ElasticSearcher, Song, Communicator, pretty_size, pretty_min
       Communicator.mediator.on('player:prev', this.prev, this);
       Communicator.mediator.on('player:next', this.next, this);
       Communicator.mediator.on('player:changeCurrentPosition', this.changeCurrentPosition, this);
+      Communicator.mediator.on('player:volume', this.changeVolume, this);
 
 		},
 
@@ -74,7 +75,7 @@ function( Backbone, ElasticSearcher, Song, Communicator, pretty_size, pretty_min
     voldown:function() {
       if(this.volume > 0){
         this.volume -= 5;
-        this.audio.volume = this.volume / 100;
+        this.changeVolume(this.volume / 100);
         Communicator.mediator.trigger('player:volumeChanged', this.volume);
       }
     },
@@ -82,9 +83,14 @@ function( Backbone, ElasticSearcher, Song, Communicator, pretty_size, pretty_min
     volup:function() {
       if(this.volume < 100){
         this.volume += 5;
-        this.audio.volume = this.volume / 100;
+        this.changeVolume(this.volume / 100);
         Communicator.mediator.trigger('player:volumeChanged', this.volume);
       }
+    },
+
+    changeVolume: function (volume) {
+      this.volume = Math.floor(volume*100);
+      this.audio.volume = volume;
     },
 
 
@@ -97,10 +103,10 @@ function( Backbone, ElasticSearcher, Song, Communicator, pretty_size, pretty_min
     updateProgressBar: function() {
       clearTimeout(this.tId);
 
-      var percentagePlayed = this.audio.currentTime / this.totalLength;
-      Communicator.mediator.trigger('player:percentagePlayed',
+      var currentTimeChanged = this.audio.currentTime / this.totalLength;
+      Communicator.mediator.trigger('player:currentTimeChanged',
         {
-          percentagePlayed: percentagePlayed,
+          currentTimeChanged: currentTimeChanged,
           currentTime: this.audio.currentTime,
           totalLength: this.totalLength,
           currentTimeFormated: pretty_minutes(this.audio.currentTime),
