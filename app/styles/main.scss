@@ -47,19 +47,36 @@
 
 @import '../bower_components/dragdealer/src/dragdealer.css';
 
+.volume-container{
+  margin-top: 10px;
+  content: " ";
+}
+.volume-container-left{
+  float: left;
+  width: 33px;
+}
+
 .dragdealer {
   position: relative;
-  height: 20px;
+  height: 33px;
   background: #EEE;
 }
 .dragdealer .red-bar {
   width: 63px;
-  height: 20px;
+  height: 33px;
   background: #2a6496;
   color: #FFF;
   font-size: 15px;
-  line-height: 20px;
+  line-height: 33px;
   text-align: center;
 }
+.volume-container-center{
+  width: 451px;
+  float: left;
+  margin-left: 7px;
+}
 
-
+.volume-container-right{
+  float: right;
+  width: 33px;
+}

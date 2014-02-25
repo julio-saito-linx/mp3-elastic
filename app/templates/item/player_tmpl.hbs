@@ -19,12 +19,6 @@
         <button class="btn btnNext">
           <span class="glyphicon glyphicon-fast-forward"></span>
         </button>
-        <button class="btn btnVolDown">
-          <span class="glyphicon glyphicon-volume-down"></span>
-        </button>
-        <button class="btn btnVolUp">
-          <span class="glyphicon glyphicon-volume-up"></span>
-        </button>
       </div>
       <div class="row player-buttons">
         <button class="btn btnShowSearch">
@@ -41,10 +35,30 @@
         <div id="duration-slider" class="dragdealer">
           <div id="duration-handle" class="handle red-bar">00:00</div>
         </div>
-        <div id="volume-slider" class="dragdealer">
-          <div id="volume-handle" class="handle red-bar">50%</div>
-        </div>
       </div>
+
+
+        <div class="volume-container">
+  
+          <div class="volume-container-left">
+            <button class="btn btnVolDown">
+              <span class="glyphicon glyphicon-volume-down"></span>
+            </button>
+          </div>
+  
+          <div class="volume-container-center">
+            <div id="volume-slider" class="dragdealer">
+              <div id="volume-handle" class="handle red-bar">50%</div>
+            </div>
+          </div>
+
+          <div class="volume-container-right">
+            <button class="btn btnVolUp">
+              <span class="glyphicon glyphicon-volume-up"></span>
+            </button>
+          </div>
+
+        </div>
     </div>
   </div>
 </div>
