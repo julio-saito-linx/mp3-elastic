@@ -1,74 +1,37 @@
 define([
-	'backbone',
-	'hbs!tmpl/item/player_tmpl',
+  'backbone',
+  'hbs!tmpl/item/player_tmpl',
   'communicator',
-  'dragdealer'
+  'dragdealer',
+  'libs/pretty_minutes'
 ],
-function( Backbone, PlayerTmpl, Communicator, Dragdealer ) {
-    'use strict';
+function( Backbone, PlayerTmpl, Communicator, Dragdealer, prettyMinutes ) {
+  'use strict';
 
-	/* Return a ItemView class definition */
-	return Backbone.Marionette.ItemView.extend({
+  /* Return a ItemView class definition */
+  return Backbone.Marionette.ItemView.extend({
 
-		initialize: function() {
+    initialize: function() {
       Communicator.mediator.on('player:song', this.renderSong, this);
       Communicator.mediator.on('player:currentTimeChanged', this.updateProgessBar, this);
       Communicator.mediator.on('player:volumeChanged', this.volumeChanged, this);
 
       Communicator.mediator.on('layout:show:search', this.showSearch, this);
       Communicator.mediator.on('layout:show:playlist', this.showPlaylist, this);
-		},
-
-    /*
-      {
-        currentTimeChanged: currentTimeChanged,
-        currentTime: this.audio.currentTime,
-        totalLength: this.totalLength,
-        currentTimeFormated: pretty_minutes(this.audio.currentTime),
-        totalLengthFormated: pretty_minutes(this.totalLength),
-      });
-    */
-    updateProgessBar: function( audioInfo ) {
-      this.durationSlider.setValue(audioInfo.currentTimeChanged, 0, true, false);
-      this.ui.durationHandle.text(audioInfo.currentTimeFormated);
-    },
-
-    volumeChanged: function( percentage ) {
-      this.volumeSlider.setValue(percentage/100, 0, true, false);
-      this.ui.volumeHandle.text(percentage + "%");
-    },
-
-    durationSliderHandleCallback: function(x) {
-      Communicator.mediator.trigger('player:changeCurrentPosition', x);
-    },
-
-    volumeSliderHandleCallback: function(x) {
-      this.volumeChanged(Math.floor(x*100));
-      Communicator.mediator.trigger('player:volume', x);
     },
 
     renderSong: function( songModel ) {
       this.model = songModel;
       this.render();
-      
-      this.durationSlider = new Dragdealer(this.ui.duration_slider[0], {
-        loose: true,
-        callback: this.durationSliderHandleCallback.bind(this)
-      });
-
-      this.volumeSlider = new Dragdealer(this.ui.volume_slider[0], {
-        steps: 21,
-        snap: true,
-        callback: this.volumeSliderHandleCallback.bind(this)
-      });
+      this.initializeSliders();
     },
-		
+    
     className: 'bs-example row',
 
     template: PlayerTmpl,
 
-  	/* ui selector cache */
-  	ui: {
+    /* ui selector cache */
+    ui: {
       volume: '.volume',
       btnPlay: '.btnPlay',
       btnPause: '.btnPause',
@@ -78,14 +41,14 @@ function( Backbone, PlayerTmpl, Communicator, Dragdealer ) {
       btnVolUp: '.btnVolUp',
       btnShowPlaylist: '.btnShowPlaylist',
       btnShowSearch: '.btnShowSearch',
-      duration_slider: '#duration-slider',
-      volume_slider: '#volume-slider',
+      durationSlider: '#duration-slider',
+      volumeSlider: '#volume-slider',
       durationHandle: '#duration-handle',
       volumeHandle: '#volume-handle',
     },
 
-		/* Ui events hash */
-		events: {
+    /* Ui events hash */
+    events: {
       'click .btnPlay' : 'btnPlayClicked',
       'click .btnPause' : 'btnPauseClicked',
       'click .btnPrev' : 'btnPrevClicked',
@@ -141,9 +104,59 @@ function( Backbone, PlayerTmpl, Communicator, Dragdealer ) {
       this.render();
     },
 
-		/* on render callback */
-    onRender: function() {
+
+
+    initializeSliders: function() {
+      this.durationSlider = new Dragdealer(this.ui.durationSlider[0], {
+        loose: true,
+        callback: this.durationSliderHandleCallback.bind(this),
+        animationCallback: this.updateCurrentTimeAnimation.bind(this)
+      });
+
+      this.volumeSlider = new Dragdealer(this.ui.volumeSlider[0], {
+        steps: 21,
+        snap: true,
+        callback: this.volumeSliderHandleCallback.bind(this),
+        animationCallback: this.updateVolumeAnimation.bind(this)
+      });
+      this.volumeSlider.setValue(0.5, 0, true, false);
     },
-	});
+
+    updateCurrentTimeAnimation: function(x) {
+      if(this.totalLength){
+        var currentTime = this.totalLength * x;
+        var timeFormated = prettyMinutes(currentTime);
+        this.ui.durationHandle.text(timeFormated);
+      }
+    },
+
+    updateVolumeAnimation: function(x) {
+      this.ui.volumeHandle.text(x*100 + '%');
+    },
+
+    /*******************************************************************
+    * audioInfo: currentTimeChanged, currentTime, totalLength, currentTimeFormated
+    ********************************************************************/
+    updateProgessBar: function( audioInfo ) {
+      this.totalLength = audioInfo.totalLength;
+
+      this.durationSlider.setValue(audioInfo.currentTimeChanged, 0, true, false);
+      this.ui.durationHandle.text(audioInfo.currentTimeFormated);
+    },
+
+    volumeChanged: function( percentage ) {
+      this.volumeSlider.setValue(percentage/100, 0, true, false);
+      this.ui.volumeHandle.text(percentage + '%');
+    },
+
+    durationSliderHandleCallback: function(x) {
+      Communicator.mediator.trigger('player:changeCurrentPosition', x);
+    },
+
+    volumeSliderHandleCallback: function(x) {
+      this.volumeChanged(Math.floor(x*100));
+      Communicator.mediator.trigger('player:volume', x);
+    },
+  });
 
 });
