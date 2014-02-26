@@ -48,8 +48,8 @@
 @import '../bower_components/dragdealer/src/dragdealer.css';
 
 .volume-container{
-  margin-top: 10px;
-  content: " ";
+  width: 390px;
+  float: right;
 }
 .volume-container-left{
   float: left;
@@ -57,7 +57,7 @@
 }
 
 .dragdealer {
-  position: relative;
+  //position: relative;
   height: 33px;
   background: #EEE;
 }
@@ -71,7 +71,7 @@
   text-align: center;
 }
 .volume-container-center{
-  width: 451px;
+  width: 317px;
   float: left;
   margin-left: 7px;
 }
