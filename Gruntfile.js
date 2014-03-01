@@ -243,7 +243,8 @@ module.exports = function (grunt) {
 
         copy: {
             dist: {
-                files: [{
+                files: [
+                {
                     expand: true,
                     dot: true,
                     cwd: '<%= yeoman.app %>',
@@ -252,7 +253,17 @@ module.exports = function (grunt) {
                         '*.{ico,txt}',
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
-                        'bower_components/requirejs/require.js'
+                        'bower_components/requirejs/require.js',
+                        'styles/bootstrap/{,*/}*.{eot,svg,ttf,woff}'
+                    ]
+                },
+                {
+                    expand: true,
+                    dot: true,
+                    cwd: 'appServer',
+                    dest: '<%= yeoman.dist %>',
+                    src: [
+                        '*.*'
                     ]
                 }]
             }
